@@ -13,13 +13,18 @@ random_pickup = (array, num) ->
 module.exports = (robot) ->
   robot.respond /ニュース|news/i, (msg) ->
     feed = require("feed-read")
+    keywords = [
+      'Bitcoin',
+      'Ethereum',
+      'NEM'
+    ].join('%20%7C%20')
     feed(
-      "http://hnapp.com/rss?q=Bitcoin%20%7C%20Ethereum%20score%3E1",
+      "http://hnapp.com/rss?q=" + keywords + "%20score%3E1",
       (err,articles) ->
         throw err if (err)
 
         items = random_pickup(articles.slice(0,10), 3)
-        message = "ランダムでBitcoinに関係する話題を投下します！\n"
+        message = "ランダムで暗号通貨に関係する話題を投下します！\n"
 
         news = []
         for item in items
