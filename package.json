@@ -5,6 +5,7 @@
   "author": "him0 <nakashimaorz@gmail.com>",
   "description": "slack bot",
   "dependencies": {
+    "feed-read": "0.0.1",
     "hubot": "^2.19.0",
     "hubot-diagnostics": "0.0.1",
     "hubot-google-images": "^0.2.6",
