@@ -11,17 +11,20 @@ class Ticker
   constructor: () ->
     _request = require 'request'
     _sprintf = require('sprintf-js').sprintf
-    _jpy_usd = 0 # 日本円 / ドル
-    _jpy_btc = 0 # 日本円 / BTC
-    _usd_btc = 0 # ドル   / BTC
-    _btc_eth = 0 # BTC    / ETH
-    _jpy_eth = 0 # 日本円 / ETH
+    _usd_jpy = 0 #
+    _btc_usd = 0 #
+    _btc_jpy = 0 #
+    _eth_btc = 0 #
+    _eth_jpy = 0 #
+    _xem_btc = 0 #
+    _xem_jpy = 0 #
 
     @update = () ->
       @update_global()
       @update_polo()
-      _jpy_btc = _jpy_usd * _usd_btc
-      _jpy_eth = _jpy_btc * _btc_eth
+      _btc_jpy = _usd_jpy * _btc_usd
+      _eth_jpy = _btc_jpy * _eth_btc
+      _xem_jpy = _xem_btc * _btc_jpy
 
     @update_global = () ->
       options =
@@ -32,7 +35,7 @@ class Ticker
         global_ticker = JSON.parse(body)
         for pair in global_ticker["quotes"]
           if pair["currencyPairCode"] == "USDJPY"
-            _jpy_usd = parseFloat(pair["open"])
+            _usd_jpy = parseFloat(pair["open"])
 
     @update_polo = () ->
       options =
@@ -41,18 +44,21 @@ class Ticker
 
       _request options, (error, response, body) ->
         polo_ticker = JSON.parse(body)
-        _usd_btc = parseFloat(polo_ticker["USDT_BTC"]["last"])
-        _btc_eth = parseFloat(polo_ticker["BTC_ETH"]["last"])
+        _btc_usd = parseFloat(polo_ticker["USDT_BTC"]["last"])
+        _eth_btc = parseFloat(polo_ticker["BTC_ETH"]["last"])
+        _xem_btc = parseFloat(polo_ticker["BTC_XEM"]["last"])
 
     @update_jpy = () ->
 
     @send_message = (msg) ->
       console.log "send ticker message"
-      msg.send _sprintf "JPY_USD: %14.8f", _jpy_usd
-      msg.send _sprintf "USD_BTC: %14.8f", _usd_btc
-      msg.send _sprintf "BTC_ETH: %14.8f", _btc_eth
-      msg.send _sprintf "JPY_BTC: %14.8f", _jpy_btc
-      msg.send _sprintf "JPY_ETH: %14.8f", _jpy_eth
+      msg.send _sprintf "USD/JPY: %14.8f", _usd_jpy
+      msg.send _sprintf "BTC/USD: %14.8f", _btc_usd
+      msg.send _sprintf "BTC/JPY: %14.8f", _btc_jpy
+      msg.send _sprintf "ETH/BTC: %14.8f", _eth_btc
+      msg.send _sprintf "ETH/JPY: %14.8f", _eth_jpy
+      msg.send _sprintf "XEM/BTC: %14.8f", _xem_btc
+      msg.send _sprintf "XEM/JPY: %14.8f", _xem_jpy
 
 cronJob = require('cron').CronJob
 
