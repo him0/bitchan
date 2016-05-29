@@ -48,17 +48,26 @@ class Ticker
         _eth_btc = parseFloat(polo_ticker["BTC_ETH"]["last"])
         _xem_btc = parseFloat(polo_ticker["BTC_XEM"]["last"])
 
-    @update_jpy = () ->
-
-    @send_message = (msg) ->
-      console.log "send ticker message"
+    @send_jpy_message = (msg) ->
       msg.send _sprintf "USD/JPY: %14.8f", _usd_jpy
+
+    @send_btc_message = (msg) ->
       msg.send _sprintf "BTC/USD: %14.8f", _btc_usd
       msg.send _sprintf "BTC/JPY: %14.8f", _btc_jpy
+
+    @send_eth_message = (msg) ->
       msg.send _sprintf "ETH/BTC: %14.8f", _eth_btc
       msg.send _sprintf "ETH/JPY: %14.8f", _eth_jpy
+
+    @send_xem_message = (msg) ->
       msg.send _sprintf "XEM/BTC: %14.8f", _xem_btc
       msg.send _sprintf "XEM/JPY: %14.8f", _xem_jpy
+
+    @send_all_message = (msg) ->
+      @send_jpy_message(msg)
+      @send_btc_message(msg)
+      @send_eth_message(msg)
+      @send_xem_message(msg)
 
 cronJob = require('cron').CronJob
 
@@ -69,5 +78,20 @@ module.exports = (robot) ->
     ticker.update(robot)
   ).start()
 
-  robot.respond /ticker/i, (msg) ->
-    ticker.send_message(msg)
+  robot.respond /ticker(.*)/i, (msg) ->
+    target = msg.match[1].replace(/(^\s+)|(\s+$)/g, '') # trim spaces
+    target = target.toLowerCase()
+    console.log "send ticker message target :" + target
+
+    if target == '' or target == 'all'
+      ticker.send_all_message(msg)
+    else if target == 'yen' or target == "jpy"
+      ticker.send_jpy_message(msg)
+    else if target == 'bitcoin' or target == "btc" or target == "xbt"
+      ticker.send_btc_message(msg)
+    else if target == 'ethereum' or target == "eth"
+      ticker.send_eth_message(msg)
+    else if target == 'nem' or target == "xem"
+      ticker.send_xem_message(msg)
+    else
+      ticker.send_all_message(msg)
