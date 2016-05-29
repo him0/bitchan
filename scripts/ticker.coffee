@@ -123,4 +123,4 @@ module.exports = (robot) ->
     else if target == 'lisk' or target == 'lsk'
       ticker.send_lsk_message(msg)
     else
-      msg.send 'ticker all / jpy / btc / eth / xem / dao / lsk のいずれかで読んでね♥'
+      msg.send 'ticker all / jpy / btc / eth / xem / dao / lsk のいずれかで呼んでね♥'
