@@ -18,6 +18,12 @@ class Ticker
     _eth_jpy = 0 #
     _xem_btc = 0 #
     _xem_jpy = 0 #
+    _dao_btc = 0 #
+    _dao_eth = 0 #
+    _eth_dao = 0 #
+    _dao_jpy = 0 #
+    _lsk_btc = 0 #
+    _lsk_jpy = 0 #
 
     @update = () ->
       @update_global()
@@ -25,6 +31,10 @@ class Ticker
       _btc_jpy = _usd_jpy * _btc_usd
       _eth_jpy = _btc_jpy * _eth_btc
       _xem_jpy = _xem_btc * _btc_jpy
+      _dao_eth = _dao_btc / _eth_btc
+      _eth_dao = _eth_btc / _dao_btc
+      _dao_jpy = _dao_btc * _btc_jpy
+      _lsk_jpy = _btc_jpy * _lsk_btc
 
     @update_global = () ->
       options =
@@ -47,6 +57,8 @@ class Ticker
         _btc_usd = parseFloat(polo_ticker["USDT_BTC"]["last"])
         _eth_btc = parseFloat(polo_ticker["BTC_ETH"]["last"])
         _xem_btc = parseFloat(polo_ticker["BTC_XEM"]["last"])
+        _dao_btc = parseFloat(polo_ticker["BTC_DAO"]["last"])
+        _lsk_btc = parseFloat(polo_ticker["BTC_LSK"]["last"])
 
     @send_jpy_message = (msg) ->
       msg.send _sprintf "USD/JPY: %14.8f", _usd_jpy
@@ -63,11 +75,24 @@ class Ticker
       msg.send _sprintf "XEM/BTC: %14.8f", _xem_btc
       msg.send _sprintf "XEM/JPY: %14.8f", _xem_jpy
 
+    @send_dao_message = (msg) ->
+      msg.send _sprintf "DAO/BTC: %14.8f", _dao_btc
+      msg.send _sprintf "DAO/ETH: %14.8f", _dao_eth
+      msg.send _sprintf "ETH/DAO: %14.8f", _eth_dao
+      msg.send _sprintf "DAO/JPY: %14.8f", _dao_jpy
+
+    @send_lsk_message = (msg) ->
+      msg.send _sprintf "LSK/BTC: %14.8f", _lsk_btc
+      msg.send _sprintf "LSK/JPY: %14.8f", _lsk_jpy
+
+
     @send_all_message = (msg) ->
       @send_jpy_message(msg)
       @send_btc_message(msg)
       @send_eth_message(msg)
       @send_xem_message(msg)
+      @send_dao_message(msg)
+      @send_lsk_message(msg)
 
 cronJob = require('cron').CronJob
 
@@ -83,15 +108,19 @@ module.exports = (robot) ->
     target = target.toLowerCase()
     console.log "send ticker message target :" + target
 
-    if target == '' or target == 'all'
+    if target == 'all'
       ticker.send_all_message(msg)
-    else if target == 'yen' or target == "jpy"
+    else if target == 'yen' or target == 'jyen' or target == 'jpy'
       ticker.send_jpy_message(msg)
-    else if target == 'bitcoin' or target == "btc" or target == "xbt"
+    else if target == 'bitcoin' or target == 'btc' or target == 'xbt'
       ticker.send_btc_message(msg)
-    else if target == 'ethereum' or target == "eth"
+    else if target == 'ethereum' or target == 'eth'
       ticker.send_eth_message(msg)
-    else if target == 'nem' or target == "xem"
+    else if target == 'nem' or target == 'xem'
       ticker.send_xem_message(msg)
+    else if target == 'dao' or target == 'ザダオ'
+      ticker.send_dao_message(msg)
+    else if target == 'lisk' or target == 'lsk'
+      ticker.send_lsk_message(msg)
     else
-      ticker.send_all_message(msg)
+      msg.send 'ticker all / jpy / btc / eth / xem / dao / lsk のいずれかで読んでね♥'
