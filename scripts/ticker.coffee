@@ -124,3 +124,6 @@ module.exports = (robot) ->
       ticker.send_lsk_message(msg)
     else
       msg.send 'ticker all / jpy / btc / eth / xem / dao / lsk のいずれかで呼んでね♥'
+
+  robot.hear /ザダオいくら/i, (msg) ->
+    ticker.send_dao_message(msg)
