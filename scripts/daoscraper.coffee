@@ -9,11 +9,8 @@ class ProposalIndex
     _proposals_titles = []
     _request = require 'request'
 
-    @meaage_shortener = (message) ->
-      return message
-
     @update = (send_message) ->
-      current_proposals_tiles = []
+      current_proposals_titles = []
       messages = []
 
       options =
@@ -24,11 +21,13 @@ class ProposalIndex
         proposals_json = JSON.parse(body)
         for p in proposals_json["proposals"]
           if p[8] == false
-            console.log p[2]
-            current_proposals_tiles.push p[2]
+            current_proposals_titles.push p[2]
 
-      for message in messages
-        send_message @meaage_shortener message
+        for message in current_proposals_titles
+          message = message.replace(/\.(.+)/, "")
+          message = message.replace(/\\n(.+)/, "")
+          message = message.replace(/(^\s+)|(\s+$)/g, '')
+          send_message message
 
 cronJob = require('cron').CronJob
 
