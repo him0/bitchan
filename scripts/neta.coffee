@@ -9,7 +9,7 @@ module.exports = (robot) ->
   robot.hear /Gox/i, (msg) ->
     msg.send "✝グランドゼロ✝"
 
-  robot.hear /fusan/i, (msg) ->
+  robot.hear /^fusan$/i, (msg) ->
     randomNumber = Math.floor(Math.random() * 10  % 2)
     if randomNumber == 0
       msg.send "にゃんこ🐱"
