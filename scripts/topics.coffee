@@ -36,22 +36,22 @@ class TopicSupplier
       )
 
 module.exports = (robot) ->
-  ts = new TopicSupplier
-  robot.respond /(ニュース|news|話題|topic|)(.*)/i, (msg) ->
-    keywords = [
-      'Bitcoin',
-      'Ethereum',
-      'NEM'
-    ]
-
-    message =  "話題のニュースですよ！"
-    message += "(keywords: " + keywords.join(', ') + ")"
-
-    topics = ts.random_topics(keywords, (topics) ->
-      console.log topics
-
-      robot.emit 'slack.attachment',
-        message: msg.message
-        text: message
-        content: topics
-    )
+  # ts = new TopicSupplier
+  # robot.respond /(ニュース|news|話題|topic|)(.*)/i, (msg) ->
+  #   keywords = [
+  #     'Bitcoin',
+  #     'Ethereum',
+  #     'NEM'
+  #   ]
+  #
+  #   message =  "話題のニュースですよ！"
+  #   message += "(keywords: " + keywords.join(', ') + ")"
+  #
+  #   topics = ts.random_topics(keywords, (topics) ->
+  #     console.log topics
+  #
+  #     robot.emit 'slack.attachment',
+  #       message: msg.message
+  #       text: message
+  #       content: topics
+  #   )
