@@ -1,12 +1,18 @@
+# Description:
+#   Topic Supplier
+#
+
 class TopicSupplier
   news_site_url: "http://hnapp.com/rss?q=score%3E1%20"
 
-  constructor: () ->
+  constructor: (keywords) ->
     _feed = require "feed-read"
     _pickup_size = 3
+    _keywords = keywords
+    _topics = []
 
     select_topics = (articles, size) ->
-      articles = articles.slice(0,size * 3) # トップ size * 3 件に絞る
+      articles = articles.slice(0, size * 3) # トップ size * 3 件に絞る
       selected_topics = []
       topics = []
 
@@ -17,41 +23,37 @@ class TopicSupplier
           selected_topics.push(topic)
           title = topic["title"]
           title = title.replace(/^.+;s /, "").replace(/^.+; /, "") # フィルタ
+          link = topic["link"]
           topics.push({
             title: title
-            title_link: topic["link"]
+            title_link: link
           })
-          console.log "'" +  title + "' is selected."
-       return topics
+      return topics
 
-    @random_topics = (keywords, say) ->
+    @supply = (say) ->
       url =  "http://hnapp.com/rss?q="
-      url += keywords.join('%20%7C%20') + "%20score%3E1"
+      url += _keywords.join('%20%7C%20') + "%20score%3E1"
       _feed(
         url,
         (err, articles) ->
           throw err if (err)
-          topics = select_topics(articles, _pickup_size)
+          topics = select_topics articles, _pickup_size
           say topics
       )
 
 module.exports = (robot) ->
-  # ts = new TopicSupplier
-  # robot.respond /(ニュース|news|話題|topic|)(.*)/i, (msg) ->
-  #   keywords = [
-  #     'Bitcoin',
-  #     'Ethereum',
-  #     'NEM'
-  #   ]
-  #
-  #   message =  "話題のニュースですよ！"
-  #   message += "(keywords: " + keywords.join(', ') + ")"
-  #
-  #   topics = ts.random_topics(keywords, (topics) ->
-  #     console.log topics
-  #
-  #     robot.emit 'slack.attachment',
-  #       message: msg.message
-  #       text: message
-  #       content: topics
-  #   )
+  keywords = [
+    'Bitcoin',
+    'Ethereum',
+    'NEM'
+  ]
+  ts = new TopicSupplier keywords
+
+  robot.respond /(ニュース|news|話題|topic)/, (msg) ->
+    ts.supply((topics) ->
+      console.log topics
+      robot.emit 'slack.attachment',
+        message: msg.message
+        text: "話題のニュースですよ！"
+        content: topics
+    )
