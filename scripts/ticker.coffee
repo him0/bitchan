@@ -149,7 +149,7 @@ module.exports = (robot) ->
     msg.send ticker.make_massage target
 
   robot.hear /^(.+)いくら(|\?|？)$/i, (msg) ->
-    target = msg.match[1].replace(/:bitchan /g, '')
+    target = msg.match[1].replace(/bitchan/g, '')
     target = target.replace(/(^\s+)|(\s+$)/g, '') # trim spaces
     target = target.toLowerCase()
     console.log "send ticker message target :" + target
