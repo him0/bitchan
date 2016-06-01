@@ -109,21 +109,68 @@ module.exports = (robot) ->
     console.log "send ticker message target :" + target
 
     if target == 'all'
+      msg.send '現在の価格は、'
       ticker.send_all_message(msg)
+      msg.send 'だよ♥'
     else if target == 'yen' or target == 'jyen' or target == 'jpy'
+      msg.send '現在の日本円は、'
       ticker.send_jpy_message(msg)
+      msg.send 'だよ♥'
     else if target == 'bitcoin' or target == 'btc' or target == 'xbt'
+      msg.send '現在のBitcoinは、'
       ticker.send_btc_message(msg)
+      msg.send 'だよ♥'
     else if target == 'ethereum' or target == 'eth'
+      msg.send '現在のEthereumは、'
       ticker.send_eth_message(msg)
+      msg.send 'だよ♥'
     else if target == 'nem' or target == 'xem'
+      msg.send '現在のNEMは、'
       ticker.send_xem_message(msg)
+      msg.send 'だよ♥'
     else if target == 'dao' or target == 'ザダオ'
+      msg.send '現在のザダオ(DAO)は、'
       ticker.send_dao_message(msg)
+      msg.send 'だよ♥'
     else if target == 'lisk' or target == 'lsk'
+      msg.send '現在のLISKは、'
       ticker.send_lsk_message(msg)
+      msg.send 'だよ♥'
     else
       msg.send 'ticker all / jpy / btc / eth / xem / dao / lsk のいずれかで呼んでね♥'
 
-  robot.hear /ザダオいくら/i, (msg) ->
-    ticker.send_dao_message(msg)
+  robot.hear /(.*)いくら/i, (msg) ->
+    target = msg.match[1].replace(/(^\s+)|(\s+$)/g, '') # trim spaces
+    target = target.toLowerCase()
+    console.log "send ticker message target :" + target
+
+    if target == 'all'
+      msg.send '現在の価格は、'
+      ticker.send_all_message(msg)
+      msg.send 'だよ♥'
+    else if target == 'yen' or target == 'jyen' or target == 'jpy'
+      msg.send '現在の日本円は、'
+      ticker.send_jpy_message(msg)
+      msg.send 'だよ♥'
+    else if target == 'bitcoin' or target == 'btc' or target == 'xbt'
+      msg.send '現在のBitcoinは、'
+      ticker.send_btc_message(msg)
+      msg.send 'だよ♥'
+    else if target == 'ethereum' or target == 'eth'
+      msg.send '現在のEthereumは、'
+      ticker.send_eth_message(msg)
+      msg.send 'だよ♥'
+    else if target == 'nem' or target == 'xem'
+      msg.send '現在のNEMは、'
+      ticker.send_xem_message(msg)
+      msg.send 'だよ♥'
+    else if target == 'dao' or target == 'ザダオ'
+      msg.send '現在のザダオ(DAO)は、'
+      ticker.send_dao_message(msg)
+      msg.send 'だよ♥'
+    else if target == 'lisk' or target == 'lsk'
+      msg.send '現在のLISKは、'
+      ticker.send_lsk_message(msg)
+      msg.send 'だよ♥'
+    else
+      msg.send 'ticker all / jpy / btc / eth / xem / dao / lsk のいずれかで呼んでね♥'
