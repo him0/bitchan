@@ -15,3 +15,6 @@ module.exports = (robot) ->
       msg.send "にゃんこ🐱"
     else
       msg.send "おちゃわん🍚"
+
+  robot.hear /Counterparty/i, (msg) ->
+    msg.send "ぱりーぴーぽー"
