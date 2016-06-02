@@ -65,29 +65,29 @@ class Ticker
       return message
 
     @make_btc_message = () ->
-      message =  _sprintf("BTC/USD: %14.8f", _btc_usd) + " "
+      message =  _sprintf("BTC/USD: %14.8f", _btc_usd) + "\n"
       message += _sprintf("BTC/JPY: %14.8f", _btc_jpy)
       return message
 
     @make_eth_message = () ->
-      message =  _sprintf("ETH/BTC: %14.8f", _eth_btc) + " "
+      message =  _sprintf("ETH/BTC: %14.8f", _eth_btc) + "\n"
       message += _sprintf("ETH/JPY: %14.8f", _eth_jpy)
       return message
 
     @make_xem_message = () ->
-      message =  _sprintf("XEM/BTC: %14.8f", _xem_btc) + " "
+      message =  _sprintf("XEM/BTC: %14.8f", _xem_btc) + "\n"
       message += _sprintf("XEM/JPY: %14.8f", _xem_jpy)
       return message
 
     @make_dao_message = () ->
-      message =  _sprintf("DAO/BTC: %14.8f", _dao_btc) + " "
-      message += _sprintf("DAO/ETH: %14.8f", _dao_eth) + " "
-      message += _sprintf("ETH/DAO: %14.8f", _eth_dao) + " "
+      message =  _sprintf("DAO/BTC: %14.8f", _dao_btc) + "\n"
+      message += _sprintf("DAO/ETH: %14.8f", _dao_eth) + "\n"
+      message += _sprintf("ETH/DAO: %14.8f", _eth_dao) + "\n"
       message += _sprintf("DAO/JPY: %14.8f", _dao_jpy)
       return message
 
     @make_lsk_message = () ->
-      message =  _sprintf("LSK/BTC: %14.8f", _lsk_btc) + " "
+      message =  _sprintf("LSK/BTC: %14.8f", _lsk_btc) + "\n"
       message += _sprintf("LSK/JPY: %14.8f", _lsk_jpy)
       return message
 
