@@ -105,31 +105,46 @@ class Ticker
       message = ""
       if target == 'all'
         message =  '現在の価格は、\n'
+        message += "```\n"
         message += @make_all_message(message) + "\n"
+        message += "```\n"
         message += "ですよ！"
       else if target == 'yen' or target == 'jyen' or target == 'jpy'
         message =  '現在の日本円の価格は、\n'
+        message += "```\n"
         message += @make_jpy_message(message) + "\n"
+        message += "```\n"
         message += "ですよ！"
       else if target == 'bitcoin' or target == 'btc' or target == 'xbt'
         message =  '現在の Bitcoin の価格は、\n'
+        message += "```\n"
         message += @make_btc_message(message) + "\n"
+        message += "```\n"
         message += "ですよ！"
       else if target == 'ethereum' or target == 'eth'
         message =  '現在の Ethereum の価格は、\n'
+        message += "```\n"
         message += @make_eth_message(message) + "\n"
+        message += "```\n"
         message += "ですよ！"
       else if target == 'nem' or target == 'xem'
         message =  '現在の NEM の価格は、\n'
+        message += "```\n"
         message += @make_xem_message(message) + "\n"
+        message += "```\n"
         message += "ですよ！"
       else if target == 'dao' or target == 'ザダオ'
         message =  '現在のザダオ (DAO) の価格は、\n'
+        message += "```\n"
         message += @make_dao_message(message) + "\n"
+        message += "```\n"
         message += "ですよ！"
       else if target == 'lisk' or target == 'lsk'
         message =  '現在の LISK の価格は、\n'
+        message += "```\n"
         message += @make_lsk_message(message)
+        message += "```\n"
+        message += "ですよ！"
       else
         message =  'ticker all / jpy / btc / eth / xem / dao / lsk のいずれかで呼んでね♥'
 
