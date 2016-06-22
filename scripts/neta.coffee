@@ -18,3 +18,6 @@ module.exports = (robot) ->
 
   robot.hear /Counterparty/i, (msg) ->
     msg.send "ぱりーぴーぽー"
+
+  robot.hear /(すし|寿司)/i, (msg) ->
+    msg.send "🍣"
