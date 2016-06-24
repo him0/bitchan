@@ -45,7 +45,7 @@ class Ticker
         global_ticker = JSON.parse(body)
         for pair in global_ticker["quotes"]
           if pair["currencyPairCode"] == "USDJPY"
-            _usd_jpy = parseFloat(pair["open"])
+            _usd_jpy = (parseFloat(pair["bid"]) + parseFloat(pair["ask"])) * 0.5
 
     @update_polo = () ->
       options =
