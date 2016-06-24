@@ -21,3 +21,8 @@ module.exports = (robot) ->
 
   robot.hear /(すし|寿司)/i, (msg) ->
     msg.send "🍣"
+
+  robot.hear /[おろ]うかな/i, (msg) ->
+    message =  "よ～く考えよぉ～♪ お金は大事だよぉ～♪\n"
+    message += "https://www.youtube.com/watch?v=40ysN8KPY-Y"
+    msg.send message
