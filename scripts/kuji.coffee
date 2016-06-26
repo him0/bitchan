@@ -11,4 +11,4 @@ module.exports = (robot) ->
   robot.respond /(kuji|くじ|ランダム) (.*)/i, (msg) ->
     seeds = msg.match[2].split(",")
     selected = (sample seeds).trim()
-    msg.send "選ばれたのは、'''" + selected + "'''でした。"
+    msg.send "選ばれたのは、「" + selected + "」でした。"
