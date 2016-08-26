@@ -210,7 +210,7 @@ class Ticker
       message += @make_xcp_message()
 
     @make_massage_format  = (all_mode) ->
-      message_format =  _moment().format("MM月DD日 HH:mm:ssZ")
+      message_format =  _moment().format("MM月DD日 HH:mm:ss")
       message_format += " 現在の"
 
       if all_mode is true
