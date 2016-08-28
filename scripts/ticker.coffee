@@ -130,47 +130,47 @@ class Ticker
 
     @make_xem_message = () ->
       message =  _sprintf(
-        @line_format(true, true), "BTC/XEM ", _polo_xem_btc, _zaif_xem_btc
+        @line_format(true, true), "XEM/BTC ", _polo_xem_btc, _zaif_xem_btc
       )
       message += "\n"
       message += _sprintf(
-        @line_format(true, true), "JPY/XEM ", _polo_xem_jpy, _zaif_xem_jpy
+        @line_format(true, true), "XEM/JPY ", _polo_xem_jpy, _zaif_xem_jpy
       )
 
     @make_eth_message = () ->
       message =  _sprintf(
-        @line_format(true, false), "BTC/ETH ", _polo_eth_btc
+        @line_format(true, false), "ETH/BTC ", _polo_eth_btc
       )
       message += "\n"
       message +=  _sprintf(
-        @line_format(true, false), "JPY/ETH ", _polo_eth_jpy
+        @line_format(true, false), "ETH/JPY ", _polo_eth_jpy
       )
 
     @make_mona_message = () ->
       message =  _sprintf(
-        @line_format(false, true), "BTC/MONA", _zaif_mona_btc
+        @line_format(false, true), "MONA/BTC", _zaif_mona_btc
       )
       message += "\n"
       message +=  _sprintf(
-        @line_format(false, true), "JPY/MONA", _zaif_mona_jpy
+        @line_format(false, true), "MONA/JPY", _zaif_mona_jpy
       )
 
     @make_xcp_message = () ->
       message =  _sprintf(
-        @line_format(true, false), "BTC/XCP ", _polo_etc_btc
+        @line_format(true, false), "XCP/BTC ", _polo_etc_btc
       )
       message += "\n"
       message +=  _sprintf(
-        @line_format(true, false), "JPY/XCP ", _polo_etc_jpy
+        @line_format(true, false), "XCP/JPY ", _polo_etc_jpy
       )
 
     @make_etc_message = () ->
       message =  _sprintf(
-        @line_format(true, false), "BTC/ETC ", _polo_etc_btc
+        @line_format(true, false), "ETC/BTC ", _polo_etc_btc
       )
       message += "\n"
       message +=  _sprintf(
-        @line_format(true, false), "JPY/ETC ", _polo_etc_jpy
+        @line_format(true, false), "ETC/JPY ", _polo_etc_jpy
       )
 
     @make_lsk_message = () ->
