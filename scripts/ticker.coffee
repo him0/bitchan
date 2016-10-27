@@ -157,11 +157,11 @@ class Ticker
 
     @make_xcp_message = () ->
       message =  _sprintf(
-        @line_format(true, false), "XCP/BTC ", _polo_xcp_jpy
+        @line_format(true, false), "XCP/BTC ", _polo_etc_btc
       )
       message += "\n"
       message +=  _sprintf(
-        @line_format(true, false), "XCP/JPY ", _polo_xcp_jpy
+        @line_format(true, false), "XCP/JPY ", _polo_etc_jpy
       )
 
     @make_etc_message = () ->
