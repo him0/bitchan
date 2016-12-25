@@ -186,7 +186,6 @@ class Ticker
 
     @make_xcp_message = () ->
       message =  _sprintf(
-
         @line_format(true, false), "XCP/BTC ",
         _ticker["polo"]["XCP"]["BTC"], _ticker["zaif"]["XCP"]["BTC"]
       )
