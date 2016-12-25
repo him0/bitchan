@@ -186,13 +186,7 @@ class Ticker
 
     @make_xcp_message = () ->
       message =  _sprintf(
-<<<<<<< Updated upstream
-        @line_format(true, false), "XCP/BTC ", _polo_etc_btc
-      )
-      message += "\n"
-      message +=  _sprintf(
-        @line_format(true, false), "XCP/JPY ", _polo_etc_jpy
-=======
+
         @line_format(true, false), "XCP/BTC ",
         _ticker["polo"]["XCP"]["BTC"], _ticker["zaif"]["XCP"]["BTC"]
       )
@@ -200,7 +194,6 @@ class Ticker
       message +=  _sprintf(
         @line_format(true, false), "XCP/JPY ",
         _ticker["polo"]["XCP"]["JPY"], _ticker["zaif"]["XCP"]["JPY"]
->>>>>>> Stashed changes
       )
 
     @make_etc_message = () ->
