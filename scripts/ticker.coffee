@@ -16,58 +16,50 @@ class Ticker
     _moment = require("moment");
 
     # ALL
-    # JPY
+    _ticker = {}
+    # JPY / USD
     _usd_jpy = 0
-    # BTC
-    _polo_btc_usd = 0
-    _polo_btc_jpy = _zaif_btc_jpy = 0
-    # XEM
-    _polo_xem_btc = _zaif_xem_btc = 0
-    _polo_xem_jpy = _zaif_xem_jpy = 0
-    # ETH
-    _polo_eth_btc = 0
-    _polo_eth_jpy = 0
-    # MONA
-    _zaif_mona_btc = 0
-    _zaif_mona_jpy = 0
-    # XCP
-    _polo_xcp_btc = 0
-    _polo_xcp_jpy = 0
 
-    # OPTIONAL
-    # ETC
-    _polo_etc_btc = 0
-    _polo_etc_jpy = 0
-    # LSK
-    _polo_lsk_btc = 0
-    _polo_lsk_jpy = 0
-    # NXT
-    _polo_nxt_btc = 0
-    _polo_nxt_jpy = 0
-    # SJCX
-    _polo_sjcx_btc = _zaif_sjcx_btc = 0
-    _polo_sjcx_jpy = _zaif_sjcx_jpy = 0
+    # Exchange
+    _ticker["polo"] = {
+      "BTC": {}, "XEM": {}, "ETH": {}, "XCP": {}, "ETC": {},
+      "LSK": {}, "NXT": {}, "ZEC": {}, "SJCX": {}, "XMR": {}, "XRP": {},
+    }
+
+    _ticker["zaif"] = {
+      "BTC": {}, "XEM": {}, "MONA": {}, "XCP": {}, "SJCX": {},
+    }
 
     @update = () ->
-      @update_global()
+      @update_jpy()
       @update_polo()
-      for i, item of ["btc_jpy", "mona_btc", "mona_jpy", "xem_btc", "xem_jpy"]
-        @update_zaif_item(item)
+      @update_zaif()
 
-      _moment = require("moment");
+      _ticker["polo"]["BTC"]["JPY"] = _ticker["polo"]["BTC"]["USD"] * _usd_jpy
 
-      _polo_btc_jpy = _usd_jpy * _polo_btc_usd
+      _ticker["polo"]["XEM"]["JPY"] =
+        _ticker["polo"]["XEM"]["BTC"] * _ticker["polo"]["BTC"]["JPY"]
+      _ticker["polo"]["ETH"]["JPY"] =
+        _ticker["polo"]["ETH"]["BTC"] * _ticker["polo"]["BTC"]["JPY"]
+      _ticker["polo"]["XCP"]["JPY"] =
+        _ticker["polo"]["XCP"]["BTC"] * _ticker["polo"]["BTC"]["JPY"]
 
-      _polo_xem_jpy = _polo_xem_btc * _polo_btc_jpy
-      _polo_eth_jpy = _polo_eth_btc * _polo_btc_jpy
-      _polo_xcp_jpy = _polo_xcp_btc * _polo_btc_jpy
+      _ticker["polo"]["ETC"]["JPY"] =
+        _ticker["polo"]["ETC"]["BTC"] * _ticker["polo"]["BTC"]["JPY"]
+      _ticker["polo"]["LSK"]["JPY"] =
+        _ticker["polo"]["LSK"]["BTC"] * _ticker["polo"]["BTC"]["JPY"]
+      _ticker["polo"]["NXT"]["JPY"] =
+        _ticker["polo"]["NXT"]["BTC"] * _ticker["polo"]["BTC"]["JPY"]
+      _ticker["polo"]["ZEC"]["JPY"] =
+        _ticker["polo"]["ZEC"]["BTC"] * _ticker["polo"]["BTC"]["JPY"]
+      _ticker["polo"]["SJCX"]["JPY"] =
+        _ticker["polo"]["SJCX"]["BTC"] * _ticker["polo"]["BTC"]["JPY"]
+      _ticker["polo"]["XMR"]["JPY"] =
+        _ticker["polo"]["XMR"]["BTC"] * _ticker["polo"]["BTC"]["JPY"]
+      _ticker["polo"]["XRP"]["JPY"] =
+        _ticker["polo"]["XRP"]["BTC"] * _ticker["polo"]["BTC"]["JPY"]
 
-      _polo_etc_jpy = _polo_etc_btc * _polo_btc_jpy
-      _polo_lsk_jpy = _polo_lsk_btc * _polo_btc_jpy
-      _polo_nxt_jpy = _polo_nxt_btc * _polo_btc_jpy
-      _polo_sjcx_jpy = _polo_sjcx_btc * _polo_btc_jpy
-
-    @update_global = () ->
+    @update_jpy = () ->
       options =
         url: @global_ticker_url
         timeout: 2000
@@ -85,128 +77,216 @@ class Ticker
 
       _request options, (error, response, body) ->
         polo_ticker = JSON.parse(body)
-        _polo_btc_usd = parseFloat(polo_ticker["USDT_BTC"]["last"])
-        _polo_xem_btc = parseFloat(polo_ticker["BTC_XEM"]["last"])
-        _polo_eth_btc = parseFloat(polo_ticker["BTC_ETH"]["last"])
-        _polo_xcp_btc = parseFloat(polo_ticker["BTC_XCP"]["last"])
+        _ticker["polo"]["BTC"]["USD"] =
+          parseFloat(polo_ticker["USDT_BTC"]["last"])
 
-        _polo_etc_btc = parseFloat(polo_ticker["BTC_ETC"]["last"])
-        _polo_lsk_btc = parseFloat(polo_ticker["BTC_LSK"]["last"])
-        _polo_nxt_btc = parseFloat(polo_ticker["BTC_NXT"]["last"])
-        _polo_sjcx_btc = parseFloat(polo_ticker["BTC_SJCX"]["last"])
+        _ticker["polo"]["XEM"]["BTC"] =
+          parseFloat(polo_ticker["BTC_XEM"]["last"])
+        _ticker["polo"]["ETH"]["BTC"] =
+          parseFloat(polo_ticker["BTC_ETH"]["last"])
+        _ticker["polo"]["XCP"]["BTC"] =
+          parseFloat(polo_ticker["BTC_XCP"]["last"])
+
+        _ticker["polo"]["ETC"]["BTC"] =
+          parseFloat(polo_ticker["BTC_ETC"]["last"])
+        _ticker["polo"]["LSK"]["BTC"] =
+          parseFloat(polo_ticker["BTC_LSK"]["last"])
+        _ticker["polo"]["NXT"]["BTC"] =
+          parseFloat(polo_ticker["BTC_NXT"]["last"])
+        _ticker["polo"]["ZEC"]["BTC"] =
+          parseFloat(polo_ticker["BTC_ZEC"]["last"])
+        _ticker["polo"]["SJCX"]["BTC"] =
+          parseFloat(polo_ticker["BTC_SJCX"]["last"])
+        _ticker["polo"]["XMR"]["BTC"] =
+          parseFloat(polo_ticker["BTC_XMR"]["last"])
+        _ticker["polo"]["XRP"]["BTC"] =
+          parseFloat(polo_ticker["BTC_XRP"]["last"])
+
+    @update_zaif = () ->
+      _zaif_items = [
+        "btc_jpy", "mona_btc", "mona_jpy", "xem_btc", "xem_jpy",
+        "xcp_jpy", "xcp_btc", "sjcx_jpy", "sjcx_btc"
+      ]
+      for i, item of _zaif_items
+        @update_zaif_item(item)
 
     @update_zaif_item = (item) ->
       options =
         url: @zaif_ticker_url + item
-        timeout: 2000
+        timeout: 3000
       _request options, (error, response, body) ->
         zaif_ticker = JSON.parse(body)
         _price = parseFloat(zaif_ticker["last_price"])
-        eval("_zaif_" + item + " = parseFloat(_price)")
+        switch item
+          when "btc_jpy"  then _ticker["zaif"]["BTC"]["JPY"]  = _price
+          when "mona_btc" then _ticker["zaif"]["MONA"]["BTC"] = _price
+          when "mona_jpy" then _ticker["zaif"]["MONA"]["JPY"] = _price
+          when "xem_btc"  then _ticker["zaif"]["XEM"]["BTC"]  = _price
+          when "xem_jpy"  then _ticker["zaif"]["XEM"]["JPY"]  = _price
+          when "xcp_jpy"  then _ticker["zaif"]["XCP"]["JPY"]  = _price
+          when "xcp_btc"  then _ticker["zaif"]["XCP"]["BTC"]  = _price
+          when "sjcx_jpy" then _ticker["zaif"]["SJCX"]["JPY"] = _price
+          when "sjcx_btc" then _ticker["zaif"]["SJCX"]["JPY"] = _price
 
     @make_header_message = () ->
-      _sprintf("%8s %14s %14s","", "Poloniex", "Zaif")
-
+      _sprintf("%8s %15s %15s","", "Poloniex", "Zaif")
 
     @line_format = (polo, zaif) ->
-      if polo is true and zaif is true
-        "%8s: %14.8f %14.8f"
-      else if zaif is true
-        "%8s:                %14.8f"
-      else
-        "%8s: %14.8f"
+      line = "%8s: "
+      line += if polo then "%15.8f " else "               "
+      line += if zaif then "%15.8f " else "               "
+      line
 
     @make_jpy_message = () ->
-      _sprintf(@line_format(false, false), "USD/JPY ", _usd_jpy)
+      _sprintf(@line_format(true, false), "USD/JPY ", _usd_jpy)
 
     @make_btc_message = () ->
       message =  _sprintf(
-        @line_format(true, false), "BTC/USD ", _polo_btc_usd
+        @line_format(true, false), "BTC/USD ",
+        _ticker["polo"]["BTC"]["USD"]
       )
       message += "\n"
       message += _sprintf(
-        @line_format(true, true), "BTC/JPY ", _polo_btc_jpy, _zaif_btc_jpy
+        @line_format(true, true), "BTC/JPY ",
+        _ticker["polo"]["BTC"]["JPY"], _ticker["zaif"]["BTC"]["JPY"]
       )
 
     @make_xem_message = () ->
       message =  _sprintf(
-        @line_format(true, true), "XEM/BTC ", _polo_xem_btc, _zaif_xem_btc
+        @line_format(true, true), "XEM/BTC ",
+        _ticker["polo"]["XEM"]["BTC"], _ticker["zaif"]["XEM"]["BTC"]
       )
       message += "\n"
       message += _sprintf(
-        @line_format(true, true), "XEM/JPY ", _polo_xem_jpy, _zaif_xem_jpy
+        @line_format(true, true), "XEM/JPY ",
+        _ticker["polo"]["XEM"]["JPY"], _ticker["zaif"]["XEM"]["JPY"]
       )
 
     @make_eth_message = () ->
       message =  _sprintf(
-        @line_format(true, false), "ETH/BTC ", _polo_eth_btc
+        @line_format(true, false), "ETH/BTC ",
+        _ticker["polo"]["ETH"]["BTC"]
       )
       message += "\n"
       message +=  _sprintf(
-        @line_format(true, false), "ETH/JPY ", _polo_eth_jpy
+        @line_format(true, false), "ETH/JPY ",
+        _ticker["polo"]["ETH"]["JPY"]
       )
 
     @make_mona_message = () ->
       message =  _sprintf(
-        @line_format(false, true), "MONA/BTC", _zaif_mona_btc
+        @line_format(false, true), "MONA/BTC",
+        _ticker["zaif"]["MONA"]["BTC"]
       )
       message += "\n"
       message +=  _sprintf(
-        @line_format(false, true), "MONA/JPY", _zaif_mona_jpy
+        @line_format(false, true), "MONA/JPY",
+        _ticker["zaif"]["MONA"]["JPY"]
       )
 
     @make_xcp_message = () ->
       message =  _sprintf(
+<<<<<<< Updated upstream
         @line_format(true, false), "XCP/BTC ", _polo_etc_btc
       )
       message += "\n"
       message +=  _sprintf(
         @line_format(true, false), "XCP/JPY ", _polo_etc_jpy
+=======
+        @line_format(true, false), "XCP/BTC ",
+        _ticker["polo"]["XCP"]["BTC"], _ticker["zaif"]["XCP"]["BTC"]
+      )
+      message += "\n"
+      message +=  _sprintf(
+        @line_format(true, false), "XCP/JPY ",
+        _ticker["polo"]["XCP"]["JPY"], _ticker["zaif"]["XCP"]["JPY"]
+>>>>>>> Stashed changes
       )
 
     @make_etc_message = () ->
       message =  _sprintf(
-        @line_format(true, false), "ETC/BTC ", _polo_etc_btc
+        @line_format(true, false), "ETC/BTC ",
+        _ticker["polo"]["ETC"]["BTC"]
       )
       message += "\n"
       message +=  _sprintf(
-        @line_format(true, false), "ETC/JPY ", _polo_etc_jpy
+        @line_format(true, false), "ETC/JPY ",
+        _ticker["polo"]["ETC"]["JPY"]
       )
 
     @make_lsk_message = () ->
       message =  _sprintf(
-        @line_format(true, false), "BTC/LSK ", _polo_lsk_btc
+        @line_format(true, false), "BTC/LSK ",
+        _ticker["polo"]["LSK"]["BTC"]
       )
       message += "\n"
       message +=  _sprintf(
-        @line_format(true, false), "JPY/LSK ", _polo_lsk_jpy
+        @line_format(true, false), "JPY/LSK ",
+        _ticker["polo"]["LSK"]["JPY"]
+      )
+
+    @make_zec_message = () ->
+      message =  _sprintf(
+        @line_format(true, false), "BTC/ZEC ",
+        _ticker["polo"]["ZEC"]["BTC"]
+      )
+      message += "\n"
+      message +=  _sprintf(
+        @line_format(true, false), "JPY/ZEC ",
+        _ticker["polo"]["ZEC"]["JPY"]
       )
 
     @make_nxt_message = () ->
       message =  _sprintf(
-        @line_format(true, false), "BTC/NXT ", _polo_nxt_btc
+        @line_format(true, false), "BTC/NXT ",
+        _ticker["polo"]["NXT"]["BTC"]
       )
       message += "\n"
       message +=  _sprintf(
-        @line_format(true, false), "JPY/NTX ", _polo_nxt_jpy
+        @line_format(true, false), "JPY/NTX ",
+        _ticker["polo"]["NXT"]["JPY"]
       )
 
     @make_sjcx_message = () ->
       message =  _sprintf(
-        @line_format(true, false), "BTC/SJCX", _polo_sjcx_btc
+        @line_format(true, false), "BTC/SJCX",
+        _ticker["polo"]["SJCX"]["BTC"], _ticker["zaif"]["SJCX"]["BTC"]
       )
       message += "\n"
       message +=  _sprintf(
-        @line_format(true, false), "JPY/SJCX", _polo_sjcx_jpy
+        @line_format(true, false), "JPY/SJCX",
+        _ticker["polo"]["SJCX"]["JPY"], _ticker["zaif"]["SJCX"]["JPY"]
+      )
+
+    @make_xmr_message = () ->
+      message =  _sprintf(
+        @line_format(true, false), "BTC/XMR ",
+        _ticker["polo"]["XMR"]["BTC"]
+      )
+      message += "\n"
+      message +=  _sprintf(
+        @line_format(true, false), "JPY/XMR ",
+        _ticker["polo"]["XMR"]["JPY"]
+      )
+
+    @make_xrp_message = () ->
+      message =  _sprintf(
+        @line_format(true, false), "BTC/XMR ",
+        _ticker["polo"]["XRP"]["BTC"]
+      )
+      message += "\n"
+      message +=  _sprintf(
+        @line_format(true, false), "JPY/XRP ",
+        _ticker["polo"]["XRP"]["JPY"]
       )
 
     @make_all_message = () ->
-      message =  @make_jpy_message() + "\n"
+      message =  @make_jpy_message()    + "\n"
       message += @make_header_message() + "\n"
-      message += @make_btc_message() + "\n"
-      message += @make_xem_message() + "\n"
-      message += @make_eth_message() + "\n"
-      message += @make_mona_message() + "\n"
+      message += @make_btc_message()    + "\n"
+      message += @make_xem_message()    + "\n"
+      message += @make_eth_message()    + "\n"
+      message += @make_mona_message()   + "\n"
       message += @make_xcp_message()
 
     @make_massage_format  = (all_mode) ->
@@ -225,30 +305,37 @@ class Ticker
 
     @make_massage = (target) ->
 
-      if target is 'all'
-        _sprintf(@make_massage_format(true), @make_all_message())
-      else if target is 'yen' or target is 'jyen' or target is 'jpy'
-        _sprintf(@make_massage_format(false), "日本円", @make_jpy_message())
-      else if target is 'bitcoin' or target is 'btc' or target is 'xbt'
-        _sprintf(@make_massage_format(false), "Bitcoin", @make_btc_message())
-      else if target is 'nem' or target is 'xem'
-        _sprintf(@make_massage_format(false), "NEM/XEM", @make_xem_message())
-      else if target is 'ethereum' or target is 'eth'
-        _sprintf(@make_massage_format(false), "ETH", @make_eth_message())
-      else if target is 'mona'
-        _sprintf(@make_massage_format(false), "MONA", @make_mona_message())
-      else if target is 'xcp'
-        _sprintf(@make_massage_format(false), "XCP", @make_xcp_message())
-      else if target is 'etc'
-        _sprintf(@make_massage_format(false), "ETC", @make_etc_message())
-      else if target is 'lisk' or target is 'lsk'
-        _sprintf(@make_massage_format(false), "LISK", @make_lsk_message())
-      else if target is 'nxt'
-        _sprintf(@make_massage_format(false), "NXT", @make_nxt_message())
-      else if target is 'sjcx'
-        _sprintf(@make_massage_format(false), "SJCX", @make_sjcx_message())
-      else
-        "JPY / BTC / XEM / ETH / MONA / XCP / XCP / ETC / LSK / NXT / SJCX が対応しています。"
+      switch target
+        when 'all'
+          _sprintf(@make_massage_format(true), @make_all_message())
+        when 'yen', 'jyen', 'jpy'
+          _sprintf(@make_massage_format(false), "日本円", @make_jpy_message())
+        when 'bitcoin', 'btc', 'xbt'
+          _sprintf(@make_massage_format(false), "Bitcoin", @make_btc_message())
+        when 'nem', 'xem'
+          _sprintf(@make_massage_format(false), "NEM/XEM", @make_xem_message())
+        when 'ethereum', 'eth', 'ether'
+          _sprintf(@make_massage_format(false), "ETH", @make_eth_message())
+        when 'mona'
+          _sprintf(@make_massage_format(false), "MONA", @make_mona_message())
+        when 'xcp'
+          _sprintf(@make_massage_format(false), "XCP", @make_xcp_message())
+        when 'etc'
+          _sprintf(@make_massage_format(false), "ETC", @make_etc_message())
+        when 'lisk', 'lsk'
+          _sprintf(@make_massage_format(false), "LISK", @make_lsk_message())
+        when 'zec', 'zcash'
+          _sprintf(@make_massage_format(false), "ZEC", @make_zec_message())
+        when 'nxt'
+          _sprintf(@make_massage_format(false), "NXT", @make_nxt_message())
+        when 'sjcx'
+          _sprintf(@make_massage_format(false), "SJCX", @make_sjcx_message())
+        when 'xmr', 'monero'
+          _sprintf(@make_massage_format(false), "XMR", @make_xmr_message())
+        when 'xrp', 'ripple'
+          _sprintf(@make_massage_format(false), "XRP", @make_xrp_message())
+        else
+          "JPY / BTC / XEM / ETH / MONA / XCP / XCP / ETC / LSK / ZEC / NXT / SJCX / XMR / XRP が対応しています。"
 
 cronJob = require('cron').CronJob
 
