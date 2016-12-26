@@ -326,6 +326,8 @@ class Ticker
           _sprintf(@make_massage_format(false), "XMR", @make_xmr_message())
         when 'xrp', 'ripple'
           _sprintf(@make_massage_format(false), "XRP", @make_xrp_message())
+        when 'pepe', 'pepechash'
+          "＿人人人人人人人人人人＿\n" + "＞　家が買えるぐらい　＜\n" + "￣Y^Y^Y^Y^Y^Y^Y^Y^Y￣"
         else
           "JPY / BTC / XEM / ETH / MONA / XCP / XCP / ETC / LSK / ZEC / NXT / SJCX / XMR / XRP が対応しています。"
 
