@@ -113,7 +113,7 @@ class Ticker
     @update_zaif_item = (item) ->
       options =
         url: @zaif_ticker_url + item
-        timeout: 3000
+        timeout: 5000
       _request options, (error, response, body) ->
         zaif_ticker = JSON.parse(body)
         _price = parseFloat(zaif_ticker["last_price"])
@@ -336,7 +336,7 @@ cronJob = require('cron').CronJob
 module.exports = (robot) ->
   ticker = new Ticker()
 
-  new cronJob('*/5 * * * * *', () ->
+  new cronJob('*/15 * * * * *', () ->
     ticker.update(robot)
   ).start()
 
