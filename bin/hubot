@@ -5,4 +5,5 @@ set -e
 npm install
 export PATH="node_modules/.bin:node_modules/hubot/node_modules/.bin:$PATH"
 
-exec node_modules/.bin/hubot --name "bitchan" "$@"
+forever start -o out.log -r error.log -c coffee node_modules/.bin/hubot --name bitchan  --adapter slack; tail -f out.log
+#exec node_modules/.bin/hubot --name "bitchan" "$@"
