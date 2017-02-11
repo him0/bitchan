@@ -3,3 +3,6 @@ node_modules
 .hubot_history
 docker-compose.yml
 Procfile
+out.log
+error.log
+tools
