@@ -26,7 +26,7 @@ class Ticker {
       BTC: { USD: { polo: 0          }, JPY: { polo: 0, zaif: 0 } },
 
       XEM: { BTC: { polo: 0, zaif: 0 }, JPY: { polo: 0, zaif: 0 } },
-      MON: { BTC: { polo: 0, zaif: 0 }, JPY: { polo: 0, zaif: 0 } },
+      MON: { BTC: {          zaif: 0 }, JPY: {          zaif: 0 } },
       ETH: { BTC: { polo: 0          }, JPY: { polo: 0          } },
       XCP: { BTC: { polo: 0, zaif: 0 }, JPY: { polo: 0, zaif: 0 } },
       ETC: { BTC: { polo: 0          }, JPY: { polo: 0          } },
@@ -68,7 +68,7 @@ class Ticker {
     setTimeout(() => { this.updateJpy(); }, this.updateSequesnce);
   }
 
-  updatePolo() {
+  updatePolo(){
     let charangeTimes = 0;
     let t = this.ticker;
 
@@ -141,8 +141,8 @@ class Ticker {
         let price = parseFloat(body["last_price"]);
         switch(item) {
           case("btc_jpy"):  t.BTC.JPY.zaif = price; break;
-          case("mona_btc"): t.NON.BTC.zaif = price; break;
-          case("mona_jpy"): t.NON.JPY.zaif = price; break;
+          case("mona_btc"): t.MON.BTC.zaif = price; break;
+          case("mona_jpy"): t.MON.JPY.zaif = price; break;
           case("xem_btc"):  t.XEM.BTC.zaif = price; break;
           case("xem_jpy"):  t.XEM.JPY.zaif = price; break;
           case("xcp_jpy"):  t.XCP.JPY.zaif = price; break;
@@ -201,8 +201,11 @@ class Ticker {
     let polo_c_btc_message = "";
     if(polo_c_btc != null) {
       polo_c_btc_message = sprintf(" %15.8f", polo_c_btc);
+    }else {
+      polo_c_btc_message = sprintf(" %15s", "");
     }
     message += polo_c_btc_message;
+
 
     let zaif_c_btc = this.ticker[currency].BTC.zaif;
     let zaif_c_btc_message = "";
@@ -217,6 +220,8 @@ class Ticker {
     let polo_c_jpy_message = "";
     if(polo_c_jpy != null) {
       polo_c_jpy_message = sprintf(" %15.4f", polo_c_jpy);
+    }else {
+      polo_c_jpy_message = sprintf(" %15s", "");
     }
     message += polo_c_jpy_message;
 
@@ -256,14 +261,15 @@ class Ticker {
     }else {
       message = "＿人人人人人人人人人人＿\n" +
                 "＞ヨットが買えるぐらい＜\n" +
-                "￣Y^Y^Y^Y^Y^Y^Y^Y^Y^Y￣\n";
+                "￣Y^Y^Y^Y^Y^Y^Y^Y^Y￣\n";
+
     }
     return(message);
   }
 
   make_massage(target) {
     if([
-      'all', 'jpy', 'bitcoin', 'btc', 'nem', 'xem', 'eth', 'xcp',
+      'all', 'jpy', 'bitcoin', 'btc', 'nem', 'xem', 'eth', 'mona', 'xcp',
       'etc', 'lsk', 'zec', 'nxt', 'sjcx', 'nmr', 'xrp', 'pepe', 'pepechash'
     ].indexOf(target) === -1) {
       return("JPY / BTC / XEM / ETH / MONA / XCP / XCP / ETC / LSK / ZEC / NXT / SJCX / XMR / XRP が対応しています。\n");
