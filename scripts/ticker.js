@@ -9,7 +9,6 @@
 const request = require('request-promise');
 const sprintf = require('sprintf-js').sprintf;
 const moment = require("moment");
-const cronJob = require('cron').CronJob;
 
 class Ticker {
   constructor(updateSequesnce = 20000) {
